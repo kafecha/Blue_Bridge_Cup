@@ -44,7 +44,7 @@ ucLed[x]=y
 
 #### 两个互斥点亮
 
-<img src="./led .assets/image-20250218165436642.png" alt="image-20250218165436642" style="zoom:80%;" />
+<img src="./led .assets/image-20250218165436642.png" alt="image-20250218165436642" style="zoom: 67%;" />
 
 ``` 
 ucLed[0] = Seg_Disp_Mode;
@@ -53,7 +53,7 @@ ucLed[0] = !Seg_Disp_Mode;
 
 #### 三个及以上
 
-<img src="./led .assets/image-20250218170005114.png" alt="image-20250218170005114" style="zoom:80%;" />
+<img src="./led .assets/image-20250218170005114.png" alt="image-20250218170005114" style="zoom: 67%;" />
 
 ```c
 for(i=0;i<3;i++)
@@ -82,7 +82,50 @@ void Led_Proc()
 }
 ```
 
+### 流转模式
 
+##### 顺序点亮
+
+```c
+for(i=0;i<8;i++)
+    ucLed[i]=(i == Led_Pos)
+```
+
+##### 两边往中间
+
+```c
+Led_Pos += 9;
+if(Led_Pos > 34)
+{
+    Led_Pos = 7；
+}
+
+
+for(i=0;i<8;i++)
+{
+    ucLed[i] = ((i == Led_Pos / 10)||(i ==（Led_Pos%10))
+}
+```
+
+### 亮度等级
+
+<img src="./led .assets/image-20250218220820076.png" alt="image-20250218220820076" style="zoom:67%;" />
+
+```c
+unsigned char Led_Pwm;//LED亮度等级控制专用
+unsigned char Led_Num;//LED显示计数专用
+
+
+void Timer0Server() interrupt 1
+{
+	if(++Led_Num == 13) Led_Num = 0;
+    
+    if(Led_Num <= Led_Pwm)
+        Led_Disp(ucLed);
+    else
+        Led_Disp(0);
+}
+```
 
 
 
